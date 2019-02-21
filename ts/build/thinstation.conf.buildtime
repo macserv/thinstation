@@ -1,42 +1,285 @@
-AUDIO_LEVEL=90
-MIC_LEVEL=0
-SESSION_0_TYPE=xfwm4
-SESSION_0_AUTOSTART=on
+
+###################################################
+# -- Thinstation BUILD TIME configuration file -- #
+###################################################
+
+
+##
+# --- General Options
+#
+# AUDIO_LEVEL        Audio Level for sound, 0-100
+# MIC_LEVEL          Recording level for input devices, 0-100
+# LOCALE             If multiple locales are included in the image, you can use this to
+#                     select one during boot with a .conf file.	
+# TIME_ZONE          Used to set time zone on a TS client with a zone info file. If multiple
+#                      zone-info files are included, this selection can be refined with additional
+#                      .conf files.
+# SYSLOG_SERVER      Log server ip address or hostname.
+#                    If the work "local" is used, then syslog starts logging locally
+#                    If not specified syslogd is not loaded.
+# USB_STORAGE_SYNC   ON    Safer writing
+#                    OFF   Faster writes to USB storage devices
+#                    WARNING: This may lead to data corruption when the device is unplugged
+#                             before buffers have been flushed
+# USB_MOUNT_DIR      Directory to use for mounting usbdisks (default: /mnt/usbdevice/)
+# USB_MOUNT_USELABEL Label to use for individual usb disks
+#                    default is to use the device name (eg. sda1 - /mnt/usbdevice/sda1)
+#                    NO       use default ONLY
+#                    YES      will use label on usb volume if exists or fallback to default
+#                    <label>  will use label on usb volume if exists or <label> otherwise
+#                    adds suffix of n (1,2,3,etc.) if duplicate labels found
+# USB_MOUNT_OPTIONS  additional mount options for usb devices (eg. utf8,shortname=win95)
+# 		     see mount documentation for details (man mount)
+# DISK_STORAGE_SYNC  ON    Safer writing
+#                    OFF   Faster writes to USB storage devices
+#                    WARNING: This may lead to data corruption when the device is unplugged
+#                             before buffers have been flushed
+# DISK_MOUNT_OPTIONS  additional mount options for disk devices (eg. utf8,shortname=win95)
+# 		     see mount documentation for details (man mount)
+# CDROM_MOUNT_OPTIONS  additional mount options for cdrom devices (eg. utf8,shortname=win95)
+# 		     see mount documentation for details (man mount)
+# BIND_MOUNT#        A disk label to bind mount point mapping (eg. boot:/boot or home:/root)
+# DAILY_REBOOT       Will reboot server if up over a day and one of the session
+#                    types is closed
+# AUTOPLAYCD         If enabled this will autoplay music cds when inserted.
+# CUSTOM_CONFIG      Allows choosing custom boot config, On/Off 
+# RECONNECT_PROMPT   This displays the reconnection/shutdown options for when a session is ended
+#
+#                    OFF    No reconnect prompt
+#                    ON     Reconnect prompt will be displayed
+#		     FORCE  Just reconnect
+#                    AUTO   Automatic reconnect
+#                    AUTOXX Automatic reconnect attempt after XX seconds - msg is displayed
+#                    MENU   Shows a menu with a shutdown and reconnection option
+#                    MENUXX As MENU option, but the XX is a time period in minutes.
+#                           After XX minutes shutdown will occur unless the reconnect option
+#                           is choosen
+# NO_SESSION	     What to do in the event that all sessions have exited and not reconnected.
+#		     POWEROFF  Shutdown the terminal.(default)
+#		     REBOOT    Reboot the terminal.
+# DEBUGPAUSE	     Will pause at prompt after load of all modules and packages but before starting
+#		     Only works if debug package included
+#		     true	pause at prompt to allow debug
+#		     false	don't pause (default)
+# CRON_JOBx	     Will add this crontab entry (1 - 9)
+# FASTBOOT_URL       Normally fastboot will try to load lib.squash in the same way that vmlinuz and initrd
+#		     were loaded. This will force fastboot to download lib.squash using a specific protocol
+#		     and location
+
+AUDIO_LEVEL=67
+TIME_ZONE="America/Los_Angeles"
+SYSLOG_SERVER=local
+#USB_STORAGE_SYNC=On
+#USB_MOUNT_DIR="/mnt/usbdevice"
+#USB_MOUNT_USELABEL="Yes"
+#USB_MOUNT_OPTIONS="utf8,shortname=win95"
+BIND_MOUNT0="home:/root"
+BIND_MOUNT1="boot:/boot"
+BIND_MOUNT2="tsdev:/thinstation"
+#FASTBOOT_URL="http://www.thinstation.org"
+DAILY_REBOOT=Off
+#AUTOPLAYCD=On
+CUSTOM_CONFIG=Off
+# RECONNECT_PROMPT=Force
+# NO_SESSION=Reboot
+
+##
+# DEBUGGING
+#
+
+DEBUGPAUSE=true      # Set to False for normal use.
+NO_SESSION=/bin/sh   # Set to Reboot for normal use, /bin/sh to debug.
+NO_XORG_CMD=/bin/sh  # Disable for normal use, /bin/sh to debug.
+
+
+##
+# --- Session Defaults
+#
+
+WORKSPACE=1
+AUTOSTART=On
+ICONMODE=AUTO
+ALWAYS_ENTER_SERVER=Off
+ALLOW_EXIT=Off
+
+
+
+##
+# --- Session Details
+#
+
+SESSION_0_TITLE=MyWorkspace
+SESSION_0_AUTOSTART=On
+SESSION_0_TYPE=ica
+
+ICA_RECEIVER_STOREFRONT_1_ADDRESS="myworkspace.jpmchase.com"
+ICA_RECEIVER_AUTOSTART=true
+# ICA_RECEIVER_RECONNECT_ON_LOGON=true
+# ICA_RECEIVER_RECONNECT_ON_LAUNCH_OR_REFRESH=true
+# ICA_RECEIVER_DISPLAY_DESKTOPS_IN_FULLSCREEN=true
+ICA_RECEIVER_CLEAR_CREDENTIALS_AFTER_SESSION_ENDS=true
+
+
+
+##
+# --- Gtk Theme Engine Selection
+#
+
+GTK_THEME=Adwaita
+
+
+##
+# XFWM4
+#
+#
 XFWM4_COMPOSITING=true
 XFWM4_BRIGHTNESS="-33"
+XFWM4_SATURATION=1.0
 XFWM4_RED=0
-XFWM4_GREEN=0
 XFWM4_BLUE=0
-XFWM4_START_POSITION="BOTTOM"
-DESKTOP_ICON_SIZE=48
+XFWM4_GREEN=0
+XFWM4_THEME=Xfce
+DESKTOP_ICON_SIZE=38
 DESKTOP_FONT_SIZE=8
-DESKTOP_SHOWTRASH=false
-DEKSTOP_SHOWHOME=false
-DESKTOP_SHOWREMOVEABLE=true
-DESKTOP_SHOWFILESYSTEM=false
-GTK_THEME=Adwaita
-XFWM4_THEME=Default
-PANEL_PAGER=false
-PANEL_USER=false
-PANEL_REV_CLOCKSYSTRAY=true
-ICONS_THEME="Adwaita"
+
+
+
+
+#	Various Options for controlling icon preferences
+#ICONS_COMPOSITE_THEME_ORDER	Attempts to save space by compositing icon themes
+#				on top of each other from first to last. The last
+#				theme specified should be the most significant.
+#
+#ICONS_CUT_SIZES		Should save some space by dropping some rarely
+#				used icon sizes like scalable and 256x256
+#
+#ICONS_THEME			Sets a specific theme to the default when multiple
+#				themes are included. Don't use with COMPOSITE_THEME
+
+ICONS_COMPOSITE_THEME_ORDER="gnome Tango Neu"
 ICONS_CUT_SIZES="256x256 scalable"
-XTERM_CMD="xfce4-terminal"
-NET_USE=BOTH
-NET_USE_DHCP=on
-NET_HOSTNAME=ts_*
-NET_TELNETD_ENABLED=ON
-TIME_ZONE=America/Los_Angeles
-NET_TIME_SERVER=us.pool.ntp.org
-NET_REMOTE_ACCESS_FROM="0.0.0.0"
-TFTP_BLOCKSIZE=1024
-BIND_MOUNT0="storage:/mnt/storage"
-STORAGE_CONFIG1=/mnt/storage
-USB_STORAGE_SYNC=on
-LOCALE=en_US
-MOUNT_0="LABEL=boot     /boot           auto    x-mount.mkdir,defaults  0       0"
-MOUNT_1="LABEL=home     /root           auto    x-mount.mkdir,defaults  0       0"
-MOUNT_2="LABEL=swap     swap            swap    defaults        0       0"
-SET_RESOLUTION_MULTIMONITOR_EXPAND='mirror'
-SET_RESOLUTION_MULTIMONITOR_AUTOSCALE='scale'
+#ICONS_THEME=Neu
+
+
+
+##
+# --- X Server Options
+#
+
+SCREEN_RESOLUTION="1920x1080 | 1280x720 | *"
+SCREEN_COLOR_DEPTH="24"
+#SCREEN_HORIZSYNC="30-64 | *"
+#SCREEN_VERTREFRESH="56-87 | 60 | 56 | 70 | 72 | 75"
+SCREEN_BLANK_TIME=10
+SCREEN_STANDBY_TIME=20
+SCREEN_SUSPEND_TIME=30
+SCREEN_OFF_TIME=60
+MOUSE_RESOLUTION=100
+MOUSE_ACCELERATION=1/2
+X_COOKIE=36d71ab65c10ef065702c111a3d31593
+X_NUMLOCK=On
+
+
+
+##
+# -- Advanced XServer Options - Experts Only
+
+X_DEVICE_OPTION1="swcursor On"
+USE_XRANDR=TRUE
+
+
+
+##
+# --- Networking Options
+#
+
+NET_USE=WLAN
+NET_HOSTNAME=ts_jpmc_*
+NET_TIME_SERVER=pool.ntp.org
+NET_DHCP_TIMEOUT=30
+NET_TELNETD_ENABLED=On
+NET_REMOTE_ACCESS_FROM="192.168.0.0"
+
+# -- For use in thinstation.conf.buildtime only:
+#
+# NET_FILE_METHOD        Method to download files. Can be either of the following values: tftp, wget, http, scp.
+#                        scp is only available if package ssh is selected in build as a "package".
+#                        With the package netfiles you can use NET_FILE_METHOD, NET_FILE_ENABLED and NET_FILE_ALTERNATE
+#                        to download configuration files (thinstation.conf.group-<my group>, thinstation.conf.<mac-address> etc.)
+# NET_FILE_ENABLED       Use server for config file, On/Off
+# NET_FILE_USER          User to connect to SCP server as
+# NET_FILE_ALTERNATE     Alternate server for vmware or non-standard dhcp servers
+
+NET_USE_DHCP=On
+NET_DNS1=1.1.1.1
+NET_DNS2=1.0.0.1
+# NET_FILE_ENABLED=Off
+# NET_FILE_METHOD=http
+# NET_FILE_USER=not_needed_for_tftp
+# NET_FILE_ALTERNATE=192.168.0.4
+
+
+
+##
+# --- Networking Options (NetworkManager)
+#
+
+NET_IPV4_MODE=auto
+NET_IPV4_DNS1=1.1.1.1
+NET_IPV4_DNS2=1.0.0.1
+
+
+
+##
+# --- Wireless
+#
+
+WIRELESS_DRIVER=wext
+WIRELESS_MODE="managed"
+WIRELESS_ESSID="Chase Digital Innovation"
+WIRELESS_WPAKEY="What is the password??"
+# WIRELESS_KEY="What is the password??"
+## WIRELESS_ESSID="Business Partners"
+## WIRELESS_WPAKEY="n9W6tAjE75H4"
+## WIRELESS_KEY="n9W6tAjE75H4"
+
+
+
+##
+# --- HD Update Options
+#
+# HDUPDATE_ENABLED=Y        Enable Update
+# HDUPDATE_WS_VERSION       Version of files on workstation (set in thinstation.buildtime only)
+# HDUPDATE_SERVER_VERSION   Version of files on server (set in both buildtime and network)
+#                           This should be set in buildtime to match the WS_VERSION to prevent
+#                           unintended upgrades
+#
+# HDUPDATE_SERVER           server name
+# HDUPDATE_PATH             Path on server to files
+# HDUPDATE_TEMP             Location to temp files, make sure this is an area which is big enough to
+#                           cope with the size of the files
+#                           Can be one of     HD     will do an auto dection place of device
+#                                             RAM    will place in /tmp
+# HDUPDATE_FORCE            Force install even if not needed
+# HDUPDATE_FILES            List of files to upgrade
+# HDUPDATE_DELETE           List of files to delete (no sanity checks, use with caution)
+
+#HDUPDATE_WS_VERSION=1
+#HDUPDATE_ENABLED=Y
+#HDUPDATE_SERVER_VERSION=CO.29
+#HDUPDATE_SERVER=roadrunner
+#HDUPDATE_SERVER_TYPE=tftp
+#HDUPDATE_USER=donald
+#HDUPDATE_PATH=/ts/update
+#HDUPDATE_TEMP=HD
+#HDUPDATE_FORCE=N
+
+# Set the list of files to download
+#HDUPDATE_FILES="vmlinuz hires lowres syslinux.cfg thin.txt firefox.pkg flash.pkg"
+#HDUPDATE_FILES="hires lowres"
+#HDUPDATE_FILES="lowres"
+#HDUPDATE_FILES="hires"
+#HDUPDATE_FILES="syslinux.cfg thin.txt"
+
+
 
