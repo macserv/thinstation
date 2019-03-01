@@ -1,5 +1,6 @@
 #!/bin/bash
-#set -x
+set -xv
+
 trap "exit 1" SIGINT SIGHUP SIGTERM
 
 export LANGUAGE="C"
