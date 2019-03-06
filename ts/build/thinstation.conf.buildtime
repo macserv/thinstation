@@ -96,57 +96,48 @@ NO_XORG_CMD=/bin/sh  # Disable for normal use, /bin/sh to debug.
 # --- Session Defaults
 #
 
-WORKSPACE=1
-AUTOSTART=On
+#WORKSPACE=1
+#AUTOSTART=On
 ICONMODE=AUTO
-ALWAYS_ENTER_SERVER=Off
+#ALWAYS_ENTER_SERVER=Off
 ALLOW_EXIT=Off
 
 
 
-
 ##
-# --- Citrix Globals
-#
-ICA_BROWSER_PROTOCOL='HTTPSonSSL'
-ICA_ENCRYPTION=Basic
-ICA_COMPRESS='On'
-ICA_AUDIO_QUALITY='High'
-ICA_AUDIO='On'
-ICA_SEAMLESS_WINDOW='On'
-ICA_SMARTCARD='Off'
-ICA_DISABLECTRLALTDEL='Off'
-
-
-##
-# --- Citrix Session
+# --- Citrix Receiver Storefront Session
 #
 
-SESSION_0_TITLE='MyWorkspace'
-SESSION_0_AUTOSTART='On'
-SESSION_0_TYPE='ica_wfc'
-SESSION_0_ICA_SERVER='myworkspace.jpmchase.com'
-SESSION_0_ICA_RECEIVER_AUTOSTART='true'
-SESSION_0_ICA_RECEIVER_CLEAR_CREDENTIALS_AFTER_SESSION_ENDS='true'
-SESSION_0_ICA_AUDIO_QUALITY='High'
-SESSION_0_ICA_AUDIO='On'
-SESSION_0_ICA_SEAMLESS_WINDOW='On'
-SESSION_0_ICA_SMARTCARD='Off'
-SESSION_0_ICA_DISABLECTRLALTDEL='Off'
-SESSION_0_ICA_TITLE='MyWorkspace'
+SESSION_0_TITLE="Connect to MyWorkspace"
+SESSION_0_TYPE="ica_wfc"
+SESSION_0_AUTOSTART="On"
 
+#ICA_RECEIVER_STOREFRONT_1_ADDRESS="myworkspace.jpmchase.com"
+ICA_RECEIVER_AUTOSTART="true"
+ICA_RECEIVER_RECONNECT_ON_LOGON="true"
+ICA_RECEIVER_RECONNECT_ON_LAUNCH_OR_REFRESH="true"
+ICA_RECEIVER_DISPLAY_DESKTOPS_IN_FULLSCREEN="true"
+ICA_RECEIVER_FULLSCREEN_MODE="true"
+ICA_RECEIVER_CLEAR_CREDENTIALS_WHEN_SESSION_LAUNCHED="true"
+ICA_RECEIVER_CLEAR_CREDENTIALS_AFTER_SESSION_ENDS="true"
+ICA_RECEIVER_SHARED_USER_MODE="true"
+ICA_RECEIVER_SELF_SELECTION="false"
 
+##
+# --- Citrix Receiver Session
+#
 
+SESSION_1_TITLE="MyWorkspace"
+SESSION_1_TYPE="ica"
+SESSION_1_AUTOSTART="Off"
 
-
-#SESSION_1_TYPE=ica
-
-
-
-ICA_RECEIVER_STOREFRONT_1_ADDRESS="myworkspace.jpmchase.com"
-# ICA_RECEIVER_RECONNECT_ON_LOGON=true
-# ICA_RECEIVER_RECONNECT_ON_LAUNCH_OR_REFRESH=true
-# ICA_RECEIVER_DISPLAY_DESKTOPS_IN_FULLSCREEN=true
+ICA_BROWSER_PROTOCOL="HTTPonTCP"
+#ICA_ENCRYPTION="Basic"
+#ICA_COMPRESS="On"
+ICA_AUDIO_QUALITY="High"
+ICA_AUDIO="On"
+ICA_SMARTCARD="Off"
+ICA_DISABLECTRLALTDEL="Off"
 
 
 
@@ -197,18 +188,18 @@ ICONS_CUT_SIZES="256x256 scalable"
 
 USE_XRANDR=TRUE
 XRANDR_OPTIONS="--output DisplayPort-0 --auto --output DisplayPort-1 --auto"
+X_COOKIE="36d71ab65c10ef065702c111a3d31593"
+X_NUMLOCK="On"
 #SCREEN_RESOLUTION="1920x1080 | *"
-SCREEN_COLOR_DEPTH="24"
+#SCREEN_COLOR_DEPTH="24"
 #SCREEN_HORIZSYNC="30-64 | *"
 #SCREEN_VERTREFRESH="56-87 | 60 | 56 | 70 | 72 | 75"
-SCREEN_BLANK_TIME=10
-SCREEN_STANDBY_TIME=20
-SCREEN_SUSPEND_TIME=30
-SCREEN_OFF_TIME=60
-MOUSE_RESOLUTION=200
-MOUSE_ACCELERATION=1/3
-X_COOKIE=36d71ab65c10ef065702c111a3d31593
-X_NUMLOCK=On
+#SCREEN_BLANK_TIME=10
+#SCREEN_STANDBY_TIME=20
+#SCREEN_SUSPEND_TIME=30
+#SCREEN_OFF_TIME=60
+#MOUSE_RESOLUTION=200
+#MOUSE_ACCELERATION=1/3
 
 
 
@@ -216,30 +207,16 @@ X_NUMLOCK=On
 # --- Networking Options
 #
 
-NET_USE=WLAN
-NET_HOSTNAME=ts_jpmc_*
-NET_USE_DHCP=On
-NET_DNS1=1.1.1.1
-NET_DNS2=1.0.0.1
-NET_TIME_SERVER=pool.ntp.org
+NET_USE="WLAN"
+NET_HOSTNAME="ts_jpmc_*"
+NET_USE_DHCP="On"
+NET_DNS1="1.1.1.1"
+NET_DNS2="1.0.0.1"
+NET_TIME_SERVER="pool.ntp.org"
 NET_DHCP_TIMEOUT=30
-NET_TELNETD_ENABLED=On
-NET_REMOTE_ACCESS_FROM="192.168.0.0"
+NET_TELNETD_ENABLED="true"
 
-# -- For use in thinstation.conf.buildtime only:
-#
-# NET_FILE_METHOD        Method to download files. Can be either of the following values: tftp, wget, http, scp.
-#                        scp is only available if package ssh is selected in build as a "package".
-#                        With the package netfiles you can use NET_FILE_METHOD, NET_FILE_ENABLED and NET_FILE_ALTERNATE
-#                        to download configuration files (thinstation.conf.group-<my group>, thinstation.conf.<mac-address> etc.)
-# NET_FILE_ENABLED       Use server for config file, On/Off
-# NET_FILE_USER          User to connect to SCP server as
-# NET_FILE_ALTERNATE     Alternate server for vmware or non-standard dhcp servers
-#
-# NET_FILE_ENABLED=Off
-# NET_FILE_METHOD=http
-# NET_FILE_USER=not_needed_for_tftp
-# NET_FILE_ALTERNATE=192.168.0.4
+NET_REMOTE_ACCESS_FROM="0.0.0.0"
 
 
 
@@ -251,10 +228,6 @@ WIRELESS_DRIVER=wext
 WIRELESS_MODE="managed"
 WIRELESS_ESSID="Chase Digital Innovation"
 WIRELESS_WPAKEY="What is the password??"
-# WIRELESS_KEY="What is the password??"
-## WIRELESS_ESSID="Business Partners"
-## WIRELESS_WPAKEY="n9W6tAjE75H4"
-## WIRELESS_KEY="n9W6tAjE75H4"
 
 
 
