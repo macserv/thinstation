@@ -4,154 +4,55 @@
 ###################################################
 
 
-##
-# --- General Options
-#
-# AUDIO_LEVEL        Audio Level for sound, 0-100
-# MIC_LEVEL          Recording level for input devices, 0-100
-# LOCALE             If multiple locales are included in the image, you can use this to
-#                     select one during boot with a .conf file.	
-# TIME_ZONE          Used to set time zone on a TS client with a zone info file. If multiple
-#                      zone-info files are included, this selection can be refined with additional
-#                      .conf files.
-# SYSLOG_SERVER      Log server ip address or hostname.
-#                    If the work "local" is used, then syslog starts logging locally
-#                    If not specified syslogd is not loaded.
-# USB_STORAGE_SYNC   ON    Safer writing
-#                    OFF   Faster writes to USB storage devices
-#                    WARNING: This may lead to data corruption when the device is unplugged
-#                             before buffers have been flushed
-# USB_MOUNT_DIR      Directory to use for mounting usbdisks (default: /mnt/usbdevice/)
-# USB_MOUNT_USELABEL Label to use for individual usb disks
-#                    default is to use the device name (eg. sda1 - /mnt/usbdevice/sda1)
-#                    NO       use default ONLY
-#                    YES      will use label on usb volume if exists or fallback to default
-#                    <label>  will use label on usb volume if exists or <label> otherwise
-#                    adds suffix of n (1,2,3,etc.) if duplicate labels found
-# USB_MOUNT_OPTIONS  additional mount options for usb devices (eg. utf8,shortname=win95)
-# 		     see mount documentation for details (man mount)
-# DISK_STORAGE_SYNC  ON    Safer writing
-#                    OFF   Faster writes to USB storage devices
-#                    WARNING: This may lead to data corruption when the device is unplugged
-#                             before buffers have been flushed
-# DISK_MOUNT_OPTIONS  additional mount options for disk devices (eg. utf8,shortname=win95)
-# 		     see mount documentation for details (man mount)
-# CDROM_MOUNT_OPTIONS  additional mount options for cdrom devices (eg. utf8,shortname=win95)
-# 		     see mount documentation for details (man mount)
-# BIND_MOUNT#        A disk label to bind mount point mapping (eg. boot:/boot or home:/root)
-# DAILY_REBOOT       Will reboot server if up over a day and one of the session
-#                    types is closed
-# AUTOPLAYCD         If enabled this will autoplay music cds when inserted.
-# CUSTOM_CONFIG      Allows choosing custom boot config, On/Off 
-# RECONNECT_PROMPT   This displays the reconnection/shutdown options for when a session is ended
-#
-#                    OFF    No reconnect prompt
-#                    ON     Reconnect prompt will be displayed
-#		     FORCE  Just reconnect
-#                    AUTO   Automatic reconnect
-#                    AUTOXX Automatic reconnect attempt after XX seconds - msg is displayed
-#                    MENU   Shows a menu with a shutdown and reconnection option
-#                    MENUXX As MENU option, but the XX is a time period in minutes.
-#                           After XX minutes shutdown will occur unless the reconnect option
-#                           is choosen
-# NO_SESSION	     What to do in the event that all sessions have exited and not reconnected.
-#		     POWEROFF  Shutdown the terminal.(default)
-#		     REBOOT    Reboot the terminal.
-# DEBUGPAUSE	     Will pause at prompt after load of all modules and packages but before starting
-#		     Only works if debug package included
-#		     true	pause at prompt to allow debug
-#		     false	don't pause (default)
-# CRON_JOBx	     Will add this crontab entry (1 - 9)
-# FASTBOOT_URL       Normally fastboot will try to load lib.squash in the same way that vmlinuz and initrd
-#		     were loaded. This will force fastboot to download lib.squash using a specific protocol
-#		     and location
-
-AUDIO_LEVEL=67
-TIME_ZONE="America/Los_Angeles"
-SYSLOG_SERVER=local
-#USB_STORAGE_SYNC=On
-#USB_MOUNT_DIR="/mnt/usbdevice"
-#USB_MOUNT_USELABEL="Yes"
-#USB_MOUNT_OPTIONS="utf8,shortname=win95"
-BIND_MOUNT0="home:/root"
-BIND_MOUNT1="boot:/boot"
-BIND_MOUNT2="tsdev:/thinstation"
-#FASTBOOT_URL="http://www.thinstation.org"
-DAILY_REBOOT=Off
-#AUTOPLAYCD=On
-CUSTOM_CONFIG=Off
-# RECONNECT_PROMPT=Force
-# NO_SESSION=Reboot
 
 ##
-# DEBUGGING
+# --- DEBUGGING
 #
 
-DEBUGPAUSE=true      # Set to False for normal use.
-NO_SESSION=/bin/sh   # Set to Reboot for normal use, /bin/sh to debug.
-NO_XORG_CMD=/bin/sh  # Disable for normal use, /bin/sh to debug.
-
-
-##
-# --- Session Defaults
-#
-
-#WORKSPACE=1
-#AUTOSTART=On
-ICONMODE=AUTO
-#ALWAYS_ENTER_SERVER=Off
-ALLOW_EXIT=Off
+#DEBUGPAUSE=true
+#NO_SESSION=/bin/sh
+#NO_XORG_CMD=/bin/sh
 
 
 
 ##
-# --- Citrix Receiver Storefront Session
+#  --- GLOBAL CONFIG (ALL SESSIONS)
 #
 
-SESSION_0_TITLE="Connect to MyWorkspace"
-SESSION_0_TYPE="ica_wfc"
-SESSION_0_AUTOSTART="On"
-
-#ICA_RECEIVER_STOREFRONT_1_ADDRESS="myworkspace.jpmchase.com"
-ICA_RECEIVER_AUTOSTART="true"
-ICA_RECEIVER_RECONNECT_ON_LOGON="true"
-ICA_RECEIVER_RECONNECT_ON_LAUNCH_OR_REFRESH="true"
-ICA_RECEIVER_DISPLAY_DESKTOPS_IN_FULLSCREEN="true"
-ICA_RECEIVER_FULLSCREEN_MODE="true"
-ICA_RECEIVER_CLEAR_CREDENTIALS_WHEN_SESSION_LAUNCHED="true"
-ICA_RECEIVER_CLEAR_CREDENTIALS_AFTER_SESSION_ENDS="true"
-ICA_RECEIVER_SHARED_USER_MODE="true"
-ICA_RECEIVER_SELF_SELECTION="false"
-
-##
-# --- Citrix Receiver Session
-#
-
-SESSION_1_TITLE="MyWorkspace"
-SESSION_1_TYPE="ica"
-SESSION_1_AUTOSTART="Off"
-
-ICA_BROWSER_PROTOCOL="HTTPonTCP"
-#ICA_ENCRYPTION="Basic"
-#ICA_COMPRESS="On"
-ICA_AUDIO_QUALITY="High"
-ICA_AUDIO="On"
-ICA_SMARTCARD="Off"
-ICA_DISABLECTRLALTDEL="Off"
+AUTOSTART=Off
 
 
 
 ##
-# --- Gtk Theme Engine Selection
+# --- SESSION TYPES / BASIC CONFIG
 #
 
-GTK_THEME=Adwaita
+SESSION_0_TYPE=xfwm4
+SESSION_0_TITLE="JPMC MyWorkspace Shell"
+SESSION_0_AUTOSTART=On
+
+#SESSION_1_TYPE=openkiosk
+#SESSION_1_TITLE="JPMC MyWorkspace Kiosk"
+#SESSION_1_AUTOSTART=On
+
+SESSION_1_TYPE=ica_wfc
+SESSION_1_TITLE="JPMC MyWorkspace Receiver"
+SESSION_1_AUTOSTART=On
+
+SESSION_2_TYPE=ica
+SESSION_2_TITLE="JPMC MyWorkspace Connection"
+
 
 
 ##
-# XFWM4
+# --- SESSION CONFIG: WINDOW MANAGER (xfwm4)
 #
-#
+
+USE_XRANDR=TRUE
+XRANDR_OPTIONS="--output DisplayPort-0 --auto --output DisplayPort-1 --auto"
+X_COOKIE="36d71ab65c10ef065702c111a3d31593"
+X_NUMLOCK="On"
+
 XFWM4_COMPOSITING=true
 XFWM4_BRIGHTNESS="-33"
 XFWM4_SATURATION=1.0
@@ -162,49 +63,71 @@ XFWM4_THEME=Xfce
 DESKTOP_ICON_SIZE=38
 DESKTOP_FONT_SIZE=8
 
-
-
-
-#	Various Options for controlling icon preferences
-#ICONS_COMPOSITE_THEME_ORDER	Attempts to save space by compositing icon themes
-#				on top of each other from first to last. The last
-#				theme specified should be the most significant.
-#
-#ICONS_CUT_SIZES		Should save some space by dropping some rarely
-#				used icon sizes like scalable and 256x256
-#
-#ICONS_THEME			Sets a specific theme to the default when multiple
-#				themes are included. Don't use with COMPOSITE_THEME
-
-ICONS_COMPOSITE_THEME_ORDER="gnome Tango Neu"
-ICONS_CUT_SIZES="256x256 scalable"
-#ICONS_THEME=Neu
+GTK_THEME=Adwaita
+ICONS_THEME=Neu
 
 
 
 ##
-# --- X Server Options
+# --- SESSION CONFIG: Kiosk (openkiosk)
 #
 
-USE_XRANDR=TRUE
-XRANDR_OPTIONS="--output DisplayPort-0 --auto --output DisplayPort-1 --auto"
-X_COOKIE="36d71ab65c10ef065702c111a3d31593"
-X_NUMLOCK="On"
-#SCREEN_RESOLUTION="1920x1080 | *"
-#SCREEN_COLOR_DEPTH="24"
-#SCREEN_HORIZSYNC="30-64 | *"
-#SCREEN_VERTREFRESH="56-87 | 60 | 56 | 70 | 72 | 75"
-#SCREEN_BLANK_TIME=10
-#SCREEN_STANDBY_TIME=20
-#SCREEN_SUSPEND_TIME=30
-#SCREEN_OFF_TIME=60
-#MOUSE_RESOLUTION=200
-#MOUSE_ACCELERATION=1/3
+#SESSION_1_OPENKIOSK_HOMEPAGE="https://myworkspace.jpmchase.com/"
+#SESSION_1_OPENKIOSK_ADMIN_PASS="cad7cd6aa60c8796e9e6587f8c4dc95c"
+#SESSION_1_OPENKIOSK_TOOLBAR_ON="false"
+#SESSION_1_OPENKIOSK_RESET_TIMER="1"
 
 
 
 ##
-# --- Networking Options
+# --- SESSION CONFIG: Citrix Receiver (ica_wfc)
+#
+
+ICA_RECEIVER_STOREFRONT_1_ADDRESS="myworkspace.jpmchase.com"
+ICA_RECEIVER_AUTOSTART="true"
+ICA_RECEIVER_RECONNECT_ON_LOGON="true"
+ICA_RECEIVER_RECONNECT_ON_LAUNCH_OR_REFRESH="true"
+ICA_RECEIVER_DISPLAY_DESKTOPS_IN_FULLSCREEN="true"
+ICA_RECEIVER_FULLSCREEN_MODE="true"
+ICA_RECEIVER_CLEAR_CREDENTIALS_WHEN_SESSION_LAUNCHED="true"
+ICA_RECEIVER_CLEAR_CREDENTIALS_AFTER_SESSION_ENDS="true"
+ICA_RECEIVER_SHARED_USER_MODE="true"
+ICA_RECEIVER_SELF_SELECTION="false"
+
+
+
+##
+# --- SESSION CONFIG: Citrix (ica)
+#
+
+ICA_BROWSER_PROTOCOL="HTTPonTCP"
+ICA_ENCRYPTION="Basic"
+ICA_COMPRESS="On"
+ICA_AUDIO_QUALITY="High"
+ICA_AUDIO="On"
+ICA_SMARTCARD="Off"
+ICA_DISABLECTRLALTDEL="Off"
+
+
+
+
+##
+# --- SYSTEM CONFIG
+#
+
+AUDIO_LEVEL=67
+TIME_ZONE="America/Los_Angeles"
+SYSLOG_SERVER=local
+BIND_MOUNT0="home:/root"
+BIND_MOUNT1="boot:/boot"
+BIND_MOUNT2="tsdev:/thinstation"
+DAILY_REBOOT="Off"
+CUSTOM_CONFIG="Off"
+
+
+
+##
+# --- NETWORKING
 #
 
 NET_USE="WLAN"
@@ -221,7 +144,7 @@ NET_REMOTE_ACCESS_FROM="0.0.0.0"
 
 
 ##
-# --- Wireless
+# --- NETWORKING: WIRELESS
 #
 
 WIRELESS_DRIVER=wext
@@ -266,6 +189,5 @@ WIRELESS_WPAKEY="What is the password??"
 #HDUPDATE_FILES="lowres"
 #HDUPDATE_FILES="hires"
 #HDUPDATE_FILES="syslinux.cfg thin.txt"
-
 
 
