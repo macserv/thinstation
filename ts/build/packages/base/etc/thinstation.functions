@@ -426,7 +426,7 @@ verify_password ()
 
 		# check if it is an OS error or a return code from our command
 		#   index 2 should be -1 for OS erro, 0 for command return code
-		if {[lindex \$wait_result 2] == 0} {
+		if {[lindex \$wait_result 2] = 0} {
 		        exit [lindex \$wait_result 3]
 		}
 		else {
@@ -453,12 +453,17 @@ mounted ()
 	fi
 }
 
-is_enabled ()
+# args:    $1    - Setting value.
+#          $2-$n - Valid values.
+# example: is_in_list needle hay straw chaff needle husks fodder
+is_in_list ()
 {
 	if [ -n "$1" ]; then
 		value=$(make_caps $1)
-		for i in TRUE ON ENABLED ENABLE YES POSITIVE Y; do
-			if [ $value == $i ]; then
+		shift
+		for i in $*; do
+			list_item=$(make_caps $i)
+			if [ $value = $list_item ]; then
 				return 0
 			fi
 		done
@@ -466,18 +471,14 @@ is_enabled ()
 	return 1
 }
 
+is_enabled ()
+{
+	[ -n "$1" ] && is_in_list "$(make_caps "$1")" TRUE ON ENABLED ENABLE YES POSITIVE AFFIRMATIVE Y || return 1
+}
+
 is_disabled ()
 {
-	if [ -n "$1" ]; then
-		value=$(make_caps $1)
-		for i in FALSE OFF DISABLED DISABLE NO NEGATIVE N ; do
-			if [ $value == $i ]; then
-				return 0
-			fi
-		done
-		return 1
-	fi
-	return 0
+	[ -n "$1" ] && is_in_list "$(make_caps "$1")" FALSE OFF DISABLED DISABLE NO NEGATIVE N || return 1
 }
 
 screen_res ()
@@ -498,7 +499,7 @@ use_xrandr ()
 		echo "Using xrandr to set display resolution." >> $APPLOG
 		if [ -z "$XRANDR_OPTIONS" ]; then
 			XRANDR_OPTIONS="-s $SCREEN_RESOLUTION"
-		elif [ "$XRANDR_OPTIONS" == "dualscreen" ]; then
+		elif [ "$XRANDR_OPTIONS" = "dualscreen" ]; then
 			scrns=$(xrandr -q | grep " connected" | cut -d " " -f1)
 			numscrns=$(echo $scrns | wc -w)
 			if [ $numscrns -gt 1 ] ; then
@@ -577,7 +578,7 @@ x_auth_file ()
 x_wm ()
 {
 	# Are we going to run a real window manager?
-	if [ "$PACKAGE" == "$WMNAME" ]; then
+	if [ "$PACKAGE" = "$WMNAME" ]; then
 		return 0
 	fi
 	return 1
@@ -678,10 +679,10 @@ dconf_proxy_configure ()
 			dconf write /org/gnome/system/proxy/autoconfig-url "'$PROXY_AUTOCONFIG'"
 		fi
 
-		if [ "$PROXY_MODE" == "none" ] \
+		if [ "$PROXY_MODE" = "none" ] \
 		|| [ -z "$PROXY_MODE$PROXY_HOST$PROXY_SECURE_HOST$PROXY_FTP_HOST$PROXY_SOCKS_HOST$PROXY_AUTOCONFIG" ]; then
 			dconf write /org/gnome/system/proxy/mode "'none'"
-		elif [ "$PROXY_MODE" == "auto" ] \
+		elif [ "$PROXY_MODE" = "auto" ] \
 		|| [ -z "$PROXY_MODE" ] \
 		&& [ -n "$PROXY_AUTOCONFIG" ]; then
 			dconf write /org/gnome/system/proxy/mode "'auto'"

@@ -85,7 +85,9 @@ LOGGERTAG="ica_receiver_config.sh"
 
 
 	# Check Receiver Preference for FullscreenMode
-	if is_enabled ${ICA_RECEIVER_FULLSCREEN_MODE}; then
+	if is_in_list "${ICA_RECEIVER_FULLSCREEN_MODE}" 0 1 2; then
+		$ICA_STOREBROWSE --configselfservice FullscreenMode=${ICA_RECEIVER_FULLSCREEN_MODE}
+	elif is_enabled ${ICA_RECEIVER_FULLSCREEN_MODE}
 		$ICA_STOREBROWSE --configselfservice FullscreenMode=1
 	else
 		$ICA_STOREBROWSE --configselfservice FullscreenMode=0
