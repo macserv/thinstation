@@ -453,6 +453,9 @@ mounted ()
 	fi
 }
 
+# args:    $1    - Setting value.
+#          $2-$n - Valid values.
+# example: is_in_list needle hay straw chaff needle husks fodder
 is_in_list ()
 {
 	if [ -n "$1" ]; then
