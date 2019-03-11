@@ -1,0 +1,14 @@
+<StoreCache>
+	<DefaultStore>https://myworkspace.jpmchase.net/citrix/jpmcstore/discovery</DefaultStore>
+	<ReconnectOnLogon>True</ReconnectOnLogon>
+	<ReconnectOnLaunchOrRefresh>True</ReconnectOnLaunchOrRefresh>
+	<SharedUserMode>True</SharedUserMode>
+	<FullscreenMode>2</FullscreenMode>
+	<SelfSelection>False</SelfSelection>
+	<SessionWindowedMode>False</SessionWindowedMode>
+	<VisibleStores>
+		<Store name="MyWorkSpaceJPMCStore" type="DS">
+			https://myworkspace.jpmchase.net/citrix/jpmcstore/discovery
+		</Store>
+	</VisibleStores>
+</StoreCache>
