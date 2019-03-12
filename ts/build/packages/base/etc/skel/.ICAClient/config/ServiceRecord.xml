@@ -1,234 +1,384 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no" ?>
 <dict>
 
-	<key>TracingEnabled</key>
-	<string/>
+  <key>TracingEnabled</key>
 
-	<key>SR</key>
-	<dict>
-		<key>SR</key>
-		<string/>
-		
-		<key>UserSelectedGatewayName</key>
-		<string/>
-		
-		<key>Store</key>
-		<dict>
-			<key>Store</key>
-			<string/>
-			
-			<key>619165696</key>
-			<dict>
-				<key>619165696</key>
-				<string/>
-				
-				<key>Name</key>
-				<string>MyWorkSpaceJPMCStore</string>
-				<key>Addr</key>
-				<string>https://myworkspace.jpmchase.net/Citrix/JPMCStore/discovery</string>
-				<key>SRType</key>
-				<string>0</string>
-				
-				<key>Gateways</key>
-				<dict>
-					<key>Gateways</key>
-					<string/>
-					
-					<key>SNACARICCAG03V01</key>
-					<dict>
-						<key>SNACARICCAG03V01</key>
-						<string/>
-						
-						<key>LogonPoint</key>
-						<string>https://myworkspace.jpmchase.com/</string>
-						<key>Edition</key>
-						<string>2</string>
-						<key>Auth</key>
-						<string>3</string>
-						<key>AGMode</key>
-						<string>0</string>
-						<key>TrustedByUser</key>
-						<false/>
-						<key>TrustedByDS</key>
-						<true/>
-						<key>IsDefault</key>
-						<true/>
-						
-					</dict>
-					
-					<key>SNACARICCAG04V01</key>
-					<dict>
-						<key>SNACARICCAG04V01</key>
-						<string/>
-						
-						<key>LogonPoint</key>
-						<string>https://myworkspace.jpmchase.com/</string>
-						<key>Edition</key>
-						<string>2</string>
-						<key>Auth</key>
-						<string>3</string>
-						<key>AGMode</key>
-						<string>0</string>
-						<key>TrustedByUser</key>
-						<false/>
-						<key>TrustedByDS</key>
-						<true/>
-						<key>IsDefault</key>
-						<false/>
-						
-					</dict>
-					
-					<key>SNACD2ICCAG01V01</key>
-					<dict>
-						<key>SNACD2ICCAG01V01</key>
-						<string/>
-						
-						<key>LogonPoint</key>
-						<string>https://myworkspace.jpmchase.com/</string>
-						<key>Edition</key>
-						<string>2</string>
-						<key>Auth</key>
-						<string>3</string>
-						<key>AGMode</key>
-						<string>0</string>
-						<key>TrustedByUser</key>
-						<false/>
-						<key>TrustedByDS</key>
-						<true/>
-						<key>IsDefault</key>
-						<false/>
-						
-					</dict>
-					
-					<key>SNACD2ICCAG02V01</key>
-					<dict>
-						<key>SNACD2ICCAG02V01</key>
-						<string/>
-						
-						<key>LogonPoint</key>
-						<string>https://myworkspace.jpmchase.com/</string>
-						<key>Edition</key>
-						<string>2</string>
-						<key>Auth</key>
-						<string>3</string>
-						<key>AGMode</key>
-						<string>0</string>
-						<key>TrustedByUser</key>
-						<false/>
-						<key>TrustedByDS</key>
-						<true/>
-						<key>IsDefault</key>
-						<false/>
-						
-					</dict>
-					
-					<key>SNARDCICCAG01V01</key>
-					<dict>
-						<key>SNARDCICCAG01V01</key>
-						<string/>
-						
-						<key>LogonPoint</key>
-						<string>https://myworkspace.jpmchase.com/</string>
-						<key>Edition</key>
-						<string>2</string>
-						<key>Auth</key>
-						<string>3</string>
-						<key>AGMode</key>
-						<string>0</string>
-						<key>TrustedByUser</key>
-						<false/>
-						<key>TrustedByDS</key>
-						<true/>
-						<key>IsDefault</key>
-						<false/>
-						
-					</dict>
-					
-					<key>SNARDCICCAG02V01</key>
-					<dict>
-						<key>SNARDCICCAG02V01</key>
-						<string/>
-						
-						<key>LogonPoint</key>
-						<string>https://myworkspace.jpmchase.com/</string>
-						<key>Edition</key>
-						<string>2</string>
-						<key>Auth</key>
-						<string>3</string>
-						<key>AGMode</key>
-						<string>0</string>
-						<key>TrustedByUser</key>
-						<false/>
-						<key>TrustedByDS</key>
-						<true/>
-						<key>IsDefault</key>
-						<false/>
-						
-					</dict>
-					
-				</dict>
-				
-				<key>Beacons</key>
-				<dict>
-					<key>Beacons</key>
-					<string/>
-					
-					<key>Internal</key>
-					<dict>
-						<key>Internal</key>
-						<string/>
-						
-						<key>Addr0</key>
-						<dict>
-							<key>Addr0</key>
-							<string/>
-							
-							<key>Address</key>
-							<string>https://myworkspace.jpmchase.net/</string>
-							<key>DSconfirmed</key>
-							<true/>
-							
-						</dict>
-						
-					</dict>
-					
-					<key>External</key>
-					<dict>
-						<key>External</key>
-						<string/>
-						
-						<key>Addr0</key>
-						<dict>
-							<key>Addr0</key>
-							<string/>
-							
-							<key>Address</key>
-							<string>https://myworkspace.jpmchase.com/</string>
-							<key>DSconfirmed</key>
-							<true/>
-							
-						</dict>
-						
-						<key>Addr1</key>
-						<dict>
-							<key>Addr1</key>
-							<string/>
-							
-							<key>Address</key>
-							<string>http://ping.citrix.com</string>
-							<key>DSconfirmed</key>
-							<true/>
-							
-						</dict>
-						
-					</dict>
-					
-				</dict>
-				
-			</dict>
-			
-		</dict>
-		
-	</dict>
+  <string/>
+
+  <key>SR</key>
+
+  <dict>
+    <key>SR</key>
+    <string/>
+    
+    
+    
+    
+    <key>UserSelectedGatewayName</key>
+    <string/>
+    
+    
+    
+    
+    <key>Store</key>
+    <dict>
+      <key>Store</key>
+      <string/>
+      <key>619165696</key>
+      <dict>
+        <key>619165696</key>
+        <string/>
+        <key>Name</key>
+        <string>MyWorkSpaceJPMCStore</string>
+        <key>Addr</key>
+        <string>https://myworkspace.jpmchase.net/Citrix/JPMCStore/discovery</string>
+        <key>SRType</key>
+        <string>0</string>
+        <key>Gateways</key>
+        <dict>
+          <key>Gateways</key>
+          <string/>
+          <key>SNACARICCAG03V01</key>
+          <dict>
+            <key>SNACARICCAG03V01</key>
+            <string/>
+            <key>LogonPoint</key>
+            <string>https://myworkspace.jpmchase.com/</string>
+            <key>Edition</key>
+            <string>2</string>
+            <key>Auth</key>
+            <string>3</string>
+            <key>AGMode</key>
+            <string>0</string>
+            <key>TrustedByUser</key>
+            <false/>
+            <key>TrustedByDS</key>
+            <true/>
+            <key>IsDefault</key>
+            <true/>
+          </dict>
+          <key>SNACARICCAG04V01</key>
+          <dict>
+            <key>SNACARICCAG04V01</key>
+            <string/>
+            <key>LogonPoint</key>
+            <string>https://myworkspace.jpmchase.com/</string>
+            <key>Edition</key>
+            <string>2</string>
+            <key>Auth</key>
+            <string>3</string>
+            <key>AGMode</key>
+            <string>0</string>
+            <key>TrustedByUser</key>
+            <false/>
+            <key>TrustedByDS</key>
+            <true/>
+            <key>IsDefault</key>
+            <false/>
+          </dict>
+          <key>SNACD2ICCAG01V01</key>
+          <dict>
+            <key>SNACD2ICCAG01V01</key>
+            <string/>
+            <key>LogonPoint</key>
+            <string>https://myworkspace.jpmchase.com/</string>
+            <key>Edition</key>
+            <string>2</string>
+            <key>Auth</key>
+            <string>3</string>
+            <key>AGMode</key>
+            <string>0</string>
+            <key>TrustedByUser</key>
+            <false/>
+            <key>TrustedByDS</key>
+            <true/>
+            <key>IsDefault</key>
+            <false/>
+          </dict>
+          <key>SNACD2ICCAG02V01</key>
+          <dict>
+            <key>SNACD2ICCAG02V01</key>
+            <string/>
+            <key>LogonPoint</key>
+            <string>https://myworkspace.jpmchase.com/</string>
+            <key>Edition</key>
+            <string>2</string>
+            <key>Auth</key>
+            <string>3</string>
+            <key>AGMode</key>
+            <string>0</string>
+            <key>TrustedByUser</key>
+            <false/>
+            <key>TrustedByDS</key>
+            <true/>
+            <key>IsDefault</key>
+            <false/>
+          </dict>
+          <key>SNARDCICCAG01V01</key>
+          <dict>
+            <key>SNARDCICCAG01V01</key>
+            <string/>
+            <key>LogonPoint</key>
+            <string>https://myworkspace.jpmchase.com/</string>
+            <key>Edition</key>
+            <string>2</string>
+            <key>Auth</key>
+            <string>3</string>
+            <key>AGMode</key>
+            <string>0</string>
+            <key>TrustedByUser</key>
+            <false/>
+            <key>TrustedByDS</key>
+            <true/>
+            <key>IsDefault</key>
+            <false/>
+          </dict>
+          <key>SNARDCICCAG02V01</key>
+          <dict>
+            <key>SNARDCICCAG02V01</key>
+            <string/>
+            <key>LogonPoint</key>
+            <string>https://myworkspace.jpmchase.com/</string>
+            <key>Edition</key>
+            <string>2</string>
+            <key>Auth</key>
+            <string>3</string>
+            <key>AGMode</key>
+            <string>0</string>
+            <key>TrustedByUser</key>
+            <false/>
+            <key>TrustedByDS</key>
+            <true/>
+            <key>IsDefault</key>
+            <false/>
+          </dict>
+        </dict>
+        <key>Beacons</key>
+        <dict>
+          <key>Beacons</key>
+          <string/>
+          <key>Internal</key>
+          <dict>
+            <key>Internal</key>
+            <string/>
+            <key>Addr0</key>
+            <dict>
+              <key>Addr0</key>
+              <string/>
+              <key>Address</key>
+              <string>https://myworkspace.jpmchase.net/</string>
+              <key>DSconfirmed</key>
+              <true/>
+            </dict>
+          </dict>
+          <key>External</key>
+          <dict>
+            <key>External</key>
+            <string/>
+            <key>Addr0</key>
+            <dict>
+              <key>Addr0</key>
+              <string/>
+              <key>Address</key>
+              <string>https://myworkspace.jpmchase.com/</string>
+              <key>DSconfirmed</key>
+              <true/>
+            </dict>
+            <key>Addr1</key>
+            <dict>
+              <key>Addr1</key>
+              <string/>
+              <key>Address</key>
+              <string>http://ping.citrix.com</string>
+              <key>DSconfirmed</key>
+              <true></true>
+            </dict>
+          </dict>
+        </dict>
+      </dict>
+    </dict>
+  </dict>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 </dict>
