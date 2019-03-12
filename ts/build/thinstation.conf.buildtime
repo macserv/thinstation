@@ -19,7 +19,7 @@
 #
 
 AUDIO_LEVEL=67
-TIME_ZONE="America/Los_Angeles"
+TIME_ZONE="America/New_York"
 SYSLOG_SERVER=local
 BIND_MOUNT0="home:/root"
 BIND_MOUNT1="boot:/boot"
@@ -52,8 +52,8 @@ NET_REMOTE_ACCESS_FROM="0.0.0.0"
 
 WIRELESS_DRIVER=wext
 WIRELESS_MODE="managed"
-WIRELESS_ESSID="Chase Digital Innovation"
-WIRELESS_WPAKEY="What is the password??"
+WIRELESS_ESSID="BusinessPartners"
+WIRELESS_WPAKEY="n9W6tAjE75H4"
 
 
 

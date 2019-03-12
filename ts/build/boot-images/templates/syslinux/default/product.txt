@@ -1,3 +1,6 @@
  
 
-ThinStation Linux
+   JPMC Digital Innovation VDI Terminal Linux
+   ThinStation Linux 6.1
+
+
