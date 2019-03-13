@@ -54,7 +54,7 @@ if ! pkg_initialized $PACKAGE; then
  chmod u+s $ICA_ROOT/ctxusb
 
  # Checks for pre-existing files, from permanent storage
- if false ; then  #if [ ! -e $ICA_CONF/appsrv.ini ] ; then
+ if [ ! -e $ICA_CONF/appsrv.ini ] ; then
   cat $APPSRV_TPL >$ICA_CONF/appsrv.ini
 
   let x=0
@@ -228,7 +228,7 @@ if ! pkg_initialized $PACKAGE; then
  fi
 
  # Checks for pre-existing files, from permanent storage
- if false ; then # [ ! -e $ICA_CONF/wfclient.ini ] ; then
+ if [ ! -e $ICA_CONF/wfclient.ini ] ; then
 
   line=`grep -n Thinwire $WFCLIENT_TPL | cut -d : -f 1`
 
