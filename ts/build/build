@@ -1,5 +1,5 @@
 #!/bin/bash
-#set -xv
+#set -x
 
 trap "exit 1" SIGINT SIGHUP SIGTERM
 
@@ -41,6 +41,8 @@ liblua="lua"
 . packages/base/etc/thinstation.env
 . packages/base/etc/thinstation.defaults
 . thinstation.conf.buildtime
+
+export -f is_in_list
 export -f is_enabled
 
 PATH=/usr/local/bin:/usr/bin:/bin:/sbin:/usr/sbin:/usr/local/sbin:/ts/bin
