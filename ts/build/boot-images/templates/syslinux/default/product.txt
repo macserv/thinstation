@@ -1,6 +1,6 @@
  
 
    JPMC Digital Innovation VDI Terminal Linux
-   ThinStation Linux 6.1
+   ThinStation Linux 6.1 201903131033
 
 
