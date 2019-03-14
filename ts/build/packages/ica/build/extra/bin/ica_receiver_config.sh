@@ -10,12 +10,6 @@ ICA_SELFSERVICE=$ICA_ROOT/selfservice
 SETUP_DONE_CHECK_FILE=${HOME}/.ICAClient/.self_service_setup_done
 
 
-start_citrix_self_service()
-{
-	logger --stderr --tag $LOGGERTAG "Starting Citrix Receiver Self-Service."
-	${ICA_SELFSERVICE} --icaroot ${ICA_ROOT}
-}
-
 
 add_stores_using_provisioning_file()
 {
@@ -46,7 +40,8 @@ add_stores_using_provisioning_file()
 	
 	if [ -e "${SETUP_DONE_CHECK_FILE}" ] ; then
 	
-		exec start_citrix_self_service
+		logger --stderr --tag $LOGGERTAG "Starting Citrix Receiver Self-Service (setup was already done)."
+		exec ${ICA_SELFSERVICE} --icaroot ${ICA_ROOT}
 		
 	fi
 
@@ -211,7 +206,9 @@ add_stores_using_provisioning_file()
 	# Wait a moment before we start the Citrix Receiver, to allow configuration to be fully applied by `storebrowse`.
 	sleep 2
 	
-	exec start_citrix_self_service
+	logger --stderr --tag $LOGGERTAG "Starting Citrix Receiver Self-Service (post-setup)."
+	exec ${ICA_SELFSERVICE} --icaroot ${ICA_ROOT}
+
 
 
 
