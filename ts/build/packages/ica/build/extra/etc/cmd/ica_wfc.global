@@ -1,1 +1,1 @@
-CMD_GLOBAL="selfservice --icaroot /opt/Citrix/ICAClient"
+CMD_GLOBAL="/bin/ica_receiver_config.sh"
