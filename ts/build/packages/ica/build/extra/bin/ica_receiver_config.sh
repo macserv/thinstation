@@ -1,27 +1,76 @@
 #! /bin/sh
 
-. $TS_GLOBAL
+. "${TS_GLOBAL}"
 
+
+LOGGERTAG="ica_receiver_config.sh"
 ICA_ROOT=/opt/Citrix/ICAClient
 ICA_STOREBROWSE=$ICA_ROOT/util/storebrowse
 ICA_SELFSERVICE=$ICA_ROOT/selfservice
-LOGGERTAG="ica_receiver_config.sh"
+SETUP_DONE_CHECK_FILE=${HOME}/.ICAClient/.self_service_setup_done
+
+
+start_citrix_self_service()
+{
+	logger --stderr --tag $LOGGERTAG "Starting Citrix Receiver Self-Service."
+	${ICA_SELFSERVICE} --icaroot ${ICA_ROOT}
+}
+
+
+add_stores_using_provisioning_file()
+{
+	[ -n "${ICA_RECEIVER_PROVISIONING_CR_FILE}" ] || return
+
+	receiver_cr_path="${HOME}/${ICA_RECEIVER_PROVISIONING_CR_FILE}"
+	logger --stderr --tag $LOGGERTAG "Adding Citrix Receiver stores using the ICA_RECEIVER_PROVISIONING_CR_FILE specified at this path: ${receiver_cr_path}"
+
+	if ! [ -f "${receiver_cr_path}" ] ; then
+		logger --stderr --tag $LOGGERTAG "The specified provisioning file does not exist."
+		return
+	fi
+
+	added_store=$($ICA_STOREBROWSE --addcr "${receiver_cr_path}")
+	
+	if [ $? -ne 0 ] || [ -z "${added_store}" ] ; then
+		logger --stderr --tag $LOGGERTAG "An error occurred while adding stores, or the provisioning file contained no stores."
+		return
+	fi 
+	
+	logger --stderr --tag $LOGGERTAG "Added Store: ${added_store}"
+}
+
 
 	####
-	# Start of Receiver configuration
+	# Check if setup is done already.
+	##
+	
+	if [ -e "${SETUP_DONE_CHECK_FILE}" ] ; then
+	
+		exec start_citrix_self_service
+		
+	fi
+
+
+	####
+	# Start Self Service configuration.
 	##
 
-	logger --stderr --tag $LOGGERTAG "ica receiver körs nu..."
+	logger --stderr --tag $LOGGERTAG "Setting up Citrix Receiver Self-Service."
 	
+
 	# Kill storebrowse and other processes that might intefear...
 	killall storebrowse AuthManagerDaemon ServiceRecord selfservice
-	#$ICA_STOREBROWSE -l
 
-	# Add StoreFront stores
+
+	# Add StoreFront stores using a supplied CR file
+	add_stores_using_provisioning_file
+	
+
+	# Add StoreFront stores by login point address.
 	let x=1
-	while [ -n "`eval echo '$ICA_RECEIVER_STOREFRONT_'$x'_ADDRESS'`" ]; do
+	while [ -n "$(eval echo '$ICA_RECEIVER_STOREFRONT_'$x'_ADDRESS')" ]; do
 		# First add the store
-		$ICA_STOREBROWSE --addstore `eval echo '$ICA_RECEIVER_STOREFRONT_'$x'_ADDRESS'`
+		$ICA_STOREBROWSE --addstore "$(eval echo '$ICA_RECEIVER_STOREFRONT_'$x'_ADDRESS')"
 	
 		# Secondly, check if we should change the Default Gateway for the added store
 		#     You can find the info if you go in to Receiver --> Preferences, the tab Accounts, press Edit and
@@ -35,12 +84,12 @@ LOGGERTAG="ica_receiver_config.sh"
 		#     If the information does display completly in the application GUI you can see the information by running
 		#          /opt/Citrix/ICAClient/util/storebrowse --liststores
 		#
-		if [ -n "`eval echo '$ICA_RECEIVER_STOREFRONT_'$x'_DEFAULT_GATEWAY'`" ]; then
+		if [ -n "$(eval echo '$ICA_RECEIVER_STOREFRONT_'$x'_DEFAULT_GATEWAY')" ]; then
 			# First, extract the value into a temporary variable
-			gateway_value=`eval echo '$ICA_RECEIVER_STOREFRONT_'$x'_DEFAULT_GATEWAY'`
+			gateway_value=$(eval echo '$ICA_RECEIVER_STOREFRONT_'$x'_DEFAULT_GATEWAY')
 		
 			# Now, run the full command.
-			`eval echo "$ICA_STOREBROWSE --storegateway $gateway_value"`
+			$ICA_STOREBROWSE --storegateway "$gateway_value"
 		fi
 		let x=x+1
 	done
@@ -48,12 +97,12 @@ LOGGERTAG="ica_receiver_config.sh"
 
 	# Check if we set a specific default StoreFront store
 	if [ -n "${ICA_RECEIVER_STOREFRONT_DEFAULT}" ]; then
-		$ICA_STOREBROWSE --configselfservice DefaultStore=$ICA_RECEIVER_STOREFRONT_DEFAULT
+		$ICA_STOREBROWSE --configselfservice DefaultStore="$ICA_RECEIVER_STOREFRONT_DEFAULT"
 	fi
 
 
 	# Check Receiver Preference for Reconnect at Logon behavior
-	if is_enabled ${ICA_RECEIVER_RECONNECT_ON_LOGON}; then
+	if is_enabled "${ICA_RECEIVER_RECONNECT_ON_LOGON}"; then
 		$ICA_STOREBROWSE --configselfservice ReconnectOnLogon=True
 	else
 		$ICA_STOREBROWSE --configselfservice ReconnectOnLogon=False
@@ -61,7 +110,7 @@ LOGGERTAG="ica_receiver_config.sh"
 
 
 	# Check Receiver Preference for Reconnect at Launch Or Refresh behavior
-	if is_enabled ${ICA_RECEIVER_RECONNECT_ON_LAUNCH_OR_REFRESH}; then
+	if is_enabled "${ICA_RECEIVER_RECONNECT_ON_LAUNCH_OR_REFRESH}"; then
 		$ICA_STOREBROWSE --configselfservice ReconnectOnLaunchOrRefresh=True
 	else
 		$ICA_STOREBROWSE --configselfservice ReconnectOnLaunchOrRefresh=False
@@ -69,7 +118,7 @@ LOGGERTAG="ica_receiver_config.sh"
 
 
 	# Check Receiver Preference for Display Desktops in window/full screen mode
-	if is_enabled ${ICA_RECEIVER_DISPLAY_DESKTOPS_IN_FULLSCREEN}; then
+	if is_enabled "${ICA_RECEIVER_DISPLAY_DESKTOPS_IN_FULLSCREEN}"; then
 		$ICA_STOREBROWSE --configselfservice SessionWindowedMode=False
 	else
 		$ICA_STOREBROWSE --configselfservice SessionWindowedMode=True
@@ -77,7 +126,7 @@ LOGGERTAG="ica_receiver_config.sh"
 
 
 	# Check Receiver Preference for SharedUserMode
-	if is_enabled ${ICA_RECEIVER_SHARED_USER_MODE}; then
+	if is_enabled "${ICA_RECEIVER_SHARED_USER_MODE}"; then
 		$ICA_STOREBROWSE --configselfservice SharedUserMode=True
 	else
 		$ICA_STOREBROWSE --configselfservice SharedUserMode=False
@@ -86,8 +135,8 @@ LOGGERTAG="ica_receiver_config.sh"
 
 	# Check Receiver Preference for FullscreenMode
 	if is_in_list "${ICA_RECEIVER_FULLSCREEN_MODE}" 0 1 2; then
-		$ICA_STOREBROWSE --configselfservice FullscreenMode=${ICA_RECEIVER_FULLSCREEN_MODE}
-	elif is_enabled ${ICA_RECEIVER_FULLSCREEN_MODE} ; then
+		$ICA_STOREBROWSE --configselfservice FullscreenMode="${ICA_RECEIVER_FULLSCREEN_MODE}"
+	elif is_enabled "${ICA_RECEIVER_FULLSCREEN_MODE}" ; then
 		$ICA_STOREBROWSE --configselfservice FullscreenMode=1
 	else
 		$ICA_STOREBROWSE --configselfservice FullscreenMode=0
@@ -95,44 +144,32 @@ LOGGERTAG="ica_receiver_config.sh"
 
 
 	# Check Receiver Preference for SelfSelection
-	if is_enabled ${ICA_RECEIVER_SELF_SELECTION}; then
+	if is_enabled "${ICA_RECEIVER_SELF_SELECTION}"; then
 		$ICA_STOREBROWSE --configselfservice SelfSelection=True
 	else
 		$ICA_STOREBROWSE --configselfservice SelfSelection=False
 	fi
 
+
 	# Add extra storebrowse configselfservice options
 	let x=1
-	while [ -n "`eval echo '$ICA_RECEIVER_STOREFRONT_STOREBROWSE_CONFIGSELFSERVICE_EXTRA_'$x`" ]; do
-		$ICA_STOREBROWSE --configselfservice `eval echo '$ICA_RECEIVER_STOREFRONT_STOREBROWSE_CONFIGSELFSERVICE_EXTRA_'$x`
+	while [ -n "$(eval echo '$ICA_RECEIVER_STOREFRONT_STOREBROWSE_CONFIGSELFSERVICE_EXTRA_'$x)" ]; do
+		$ICA_STOREBROWSE --configselfservice "$(eval echo '$ICA_RECEIVER_STOREFRONT_STOREBROWSE_CONFIGSELFSERVICE_EXTRA_'$x)"
 		let x=x+1
 	done
 
-	# Check if we should autostart Citrix Receiver.
-	if is_enabled ${ICA_RECEIVER_AUTOSTART} ; then
-		#selfservice &
-		#
-		# Update, launch selfservice in the Thinstation standard "package" way instead (in case there is some significat difference)
-		# Ends with the & sign in order to let this script continue processing (otherwise the script wont continue/close until the
-		# user closes the Citrix Receiver application
-		
-		# Wait 5 seconds before we start the Citrix Receiver, otherwise I hade issues that the configuration had not applied yet.
-		# sleep 5
-		
-		# Start the package
-		exec pkg window ica_wfc &
-	fi
+
+	logger --stderr --tag $LOGGERTAG "Citrix Receiver store list after configuration:\n$($ICA_STOREBROWSE --liststores)"
+
+
+
 
 	####
-	# End of Receiver configuration
-	##
-
-	####
-	# Start of Receiver clear credentials job
+	# Start Receiver clear credentials job
 	##
 
 	# See if we shall schedule a job to clear the users credentials in Citrix Receiver
-	if is_enabled ${ICA_RECEIVER_CLEAR_CREDENTIALS_WHEN_SESSION_LAUNCHED} || [ -n "${ICA_RECEIVER_CLEAR_CREDENTIALS_AFTER_SESSION_ENDS}" ]; then
+	if is_enabled "${ICA_RECEIVER_CLEAR_CREDENTIALS_WHEN_SESSION_LAUNCHED}" || is_enabled "${ICA_RECEIVER_CLEAR_CREDENTIALS_AFTER_SESSION_ENDS}" ; then
 		# Set the default check interval to 5 minutes
 		CHECK_INTERVAL=5
 
@@ -143,26 +180,39 @@ LOGGERTAG="ica_receiver_config.sh"
 		
 		# See if we shall schedule a job to clear the users credentials in Citrix Receiver
 		# (cast it to an integer so if it's not defined it will return 0)
-		if [ $((ICA_RECEIVER_CLEAR_CREDENTIALS_CHECK_INTERVAL)) -gt 0 ]; then
+		if [ $((CHECK_INTERVAL)) -gt 0 ]; then
 			logger --stderr --tag $LOGGERTAG "Adding ica_receiver_clear_credentials.sh with $((ICA_RECEIVER_CLEAR_CREDENTIALS_CHECK_INTERVAL)) minutes interval to crontab."
 			
 			if ! crontab -l | grep -q 'ic2a_receiver_clear_credentials.sh'; then
-				echo "*/$((ICA_RECEIVER_CLEAR_CREDENTIALS_CHECK_INTERVAL)) * * * * /bin/ica_receiver_clear_credentials.sh" >> /tmp/crontab
+				echo "*/$((CHECK_INTERVAL)) * * * * /bin/ica_receiver_clear_credentials.sh" >> /tmp/crontab
 				crontab /tmp/crontab
 			fi
 		else
 			logger --stderr --tag $LOGGERTAG "ICA_RECEIVER_CLEAR_CREDENTIALS_CHECK_INTERVAL is 0 although ICA_RECEIVER_CLEAR_CREDENTIALS_WHEN_SESSION_LAUNCHED and/or ICA_RECEIVER_CLEAR_CREDENTIALS_AFTER_SESSION_ENDS are defined. No job and will not be added to crontab!"
 		fi
-	else
-		logger --stderr --tag $LOGGERTAG "Neither ICA_RECEIVER_CLEAR_CREDENTIALS_WHEN_SESSION_LAUNCHED or ICA_RECEIVER_CLEAR_CREDENTIALS_AFTER_SESSION_ENDS are set, no job will be added to crontab."
 	fi
+	
+	
+	
+	
+	####
+	# Mark setup complete
+	##
+    
+	touch "${SETUP_DONE_CHECK_FILE}"
+
 
 
 
 	####
-	# Start of Receiver clear credentials job
+	# Start Citrix Receiver
 	##
+	
+	# Wait a moment before we start the Citrix Receiver, to allow configuration to be fully applied by `storebrowse`.
+	sleep 2
+	
+	exec start_citrix_self_service
 
 
 
-# notify-send 'Configuration of Citrix Receiver completed!'
+
