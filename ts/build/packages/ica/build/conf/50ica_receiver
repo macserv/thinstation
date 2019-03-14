@@ -29,13 +29,9 @@
 #ICA_RECEIVER_RECONNECT_ON_LOGON                               true or false. Corresponding to the GUI option. If true, sessions are reconnected to when the user logs on to the Citrix Recever / StoreFront
 #ICA_RECEIVER_RECONNECT_ON_LAUNCH_OR_REFRESH                   true or false. Corresponding to the GUI option. If true, sessions are reconnected to when the user logs on to, or clicks Refresh in the Citrix Recever / StoreFront
 #ICA_RECEIVER_DISPLAY_DESKTOPS_IN_FULLSCREEN                   true or false. Corresponding to the GUI option. If true, starts all sessions in full screen mode.
-#ICA_RECEIVER_SHARED_USER_MODE                                 true or false. Google it... If you don't know it you probably don't need it.
+#ICA_RECEIVER_SHARED_USER_MODE                                 true or false. Useful for providing a kiosk-like experience using Self Service alone.
 #ICA_RECEIVER_FULLSCREEN_MODE                                  0: Windowed (default).  1: Full-screen.  2: Full-screen, with taskbar exposed.
 #ICA_RECEIVER_SELF_SELECTION                                   true or false. Google it... If you don't know it you probably don't need it.
-#
-#ICA_RECEIVER_AUTOSTART                                        true or false. If true the Citrix Receiver application is autostarted
-#                                                              at boot (after configuration is completed). The result is that the user
-#                                                              gets a login screen to the directly at boot. Recommended to have
 #
 #ICA_RECEIVER_CLEAR_CREDENTIALS_WHEN_SESSION_LAUNCHED          true or false. If true, the users credentials are cleard afther he/she
 #                                                              have launched their first session. This increases security on the Thinstation client.
@@ -66,6 +62,5 @@
 #ICA_RECEIVER_RECONNECT_ON_LOGON=true
 #ICA_RECEIVER_RECONNECT_ON_LAUNCH_OR_REFRESH=true
 #ICA_RECEIVER_DISPLAY_DESKTOPS_IN_FULLSCREEN=true
-#ICA_RECEIVER_AUTOSTART=true
 #ICA_RECEIVER_CLEAR_CREDENTIALS_AFTER_SESSION_ENDS=true
 #ICA_RECEIVER_FULLSCREEN_MODE=2
