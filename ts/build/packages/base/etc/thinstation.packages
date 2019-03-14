@@ -149,8 +149,8 @@ auto)
 	    run_command
     fi
     wait
-        check_NX
-        check_reboot
+    check_NX
+    check_reboot
     check_reconnect
   done
     $NO_SESSION
