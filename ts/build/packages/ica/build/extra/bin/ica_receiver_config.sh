@@ -1,5 +1,6 @@
 #! /bin/sh
 
+
 . "${TS_GLOBAL}"
 
 
@@ -8,7 +9,6 @@ ICA_ROOT=/opt/Citrix/ICAClient
 ICA_STOREBROWSE=$ICA_ROOT/util/storebrowse
 ICA_SELFSERVICE=$ICA_ROOT/selfservice
 SETUP_DONE_CHECK_FILE=${HOME}/.ICAClient/.self_service_setup_done
-
 
 
 add_stores_using_provisioning_file()
@@ -34,8 +34,10 @@ add_stores_using_provisioning_file()
 }
 
 
+
+
 	####
-	# Check if setup is done already.
+	# Start immediately if setup is already done.
 	##
 	
 	if [ -e "${SETUP_DONE_CHECK_FILE}" ] ; then
@@ -44,6 +46,8 @@ add_stores_using_provisioning_file()
 		exec ${ICA_SELFSERVICE} --icaroot ${ICA_ROOT}
 		
 	fi
+
+
 
 
 	####
