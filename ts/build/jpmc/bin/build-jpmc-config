@@ -1,0 +1,110 @@
+#!/bin/bash
+#
+#  JPMC Build Script
+#
+
+
+
+####
+# Configuration Parameters
+##
+
+THINSTATION_BUILD_OPTIONS="--autodl --license ACCEPT ${*}"  # Call this script with `--allmodules --savedir` when debugging.
+BUILT_SYSLINUX_PATH="/build/boot-images/syslinux/boot/syslinux"
+JPMC_PATH="/build/jpmc"
+JPMC_SYSLINUX_PATH="${JPMC_PATH}/syslinux"
+
+JPMC_CONSOLE_FONT_FILE="SCRAWL_W.PSF" # Must be named in DOS 8.3 format, and located in /build/jpmc/syslinux/psf
+
+BUILD_DATE="$(date '+%Y%m%d%H%M%S')"
+BUILD_VERSION=$(git describe --tags --dirty=.patched --abbrev=8 | perl -pe 's/(\d(?:\.\d){0,2})-(\d+)-g([[:xdigit:]]+)?(.patched)?/\1+\2:\3\4/')
+
+
+
+####
+# Setup timing
+##
+
+# Beep and echo when the shell running this script is EXITed.
+trap 'echo -e "\a" ; times ; date' EXIT
+
+
+
+####
+# Functions
+##
+
+
+build_thinstation()
+{
+    cd /build || { echo "[ERROR] Could not change directory to /build." ; return 1 ; }
+    ./build ${THINSTATION_BUILD_OPTIONS}
+}
+
+
+copy_font()
+{
+    local FONT_PATH="${JPMC_SYSLINUX_PATH}/psf/${JPMC_CONSOLE_FONT_FILE}"
+    
+    [ -f "${FONT_PATH}" ]                        || { echo "[WARNING] Specified PSF font not found at ${FONT_PATH}." ; return 1 ; }
+    cp "${FONT_PATH}" "${BUILT_SYSLINUX_PATH}/." || { echo "[WARNING] Failed to copy font to boot image." ; return 1 ; }
+}
+
+
+add_font_directive()
+{
+    local SYSLINUX_CFG_PATH="${BUILT_SYSLINUX_PATH}/syslinux.cfg"
+    local FONT_DIRECTIVE="FONT ${JPMC_CONSOLE_FONT_FILE}\n"
+
+    sed -i "1s|^|${FONT_DIRECTIVE}|" "${SYSLINUX_CFG_PATH}" || { echo "[WARNING] FONT directive insertion failed." ; return 1 ; }
+}
+
+
+edit_product_text()
+{
+    local TEMPLATE_PRODUCT_PATH="${JPMC_SYSLINUX_PATH}/product.txt.tpl"
+    local SYSLINUX_PRODUCT_PATH="${BUILT_SYSLINUX_PATH}/product.txt"
+
+    [ -f "${TEMPLATE_PRODUCT_PATH}" ] || { echo "[WARNING] Product template does not exist at expected path: ${TEMPLATE_PRODUCT_PATH}." ; return 1 ; }
+    [ -f "${SYSLINUX_PRODUCT_PATH}" ] && { rm -f "${SYSLINUX_PRODUCT_PATH}" || { echo "[WARNING] Could not remove default product.txt added during TS build." ; return 1 ; } }
+    
+    local  PRODUCT_TEMPLATE="$(cat ${TEMPLATE_PRODUCT_PATH})"
+    export PRODUCT_TEMPLATE_BUILD_DATE="${BUILD_DATE}"
+    export PRODUCT_TEMPLATE_VERSION_STRING="${BUILD_VERSION}"
+    
+    eval "echo \"${PRODUCT_TEMPLATE}\"" > "${SYSLINUX_PRODUCT_PATH}"
+
+    [ -n "$(cat ${SYSLINUX_PRODUCT_PATH})" ] || { echo "[WARNING] Custom product.txt file was not created, or is empty." ; return 1 ; }
+}
+
+
+
+####
+# Do the TS build.
+##
+
+
+echo
+echo "Starting ThinStation build."
+echo
+build_thinstation || { echo "[ERROR] ThinStation build failed... script will now exit.  Please check for errors above." ; return 1 ; }
+
+
+
+####
+# Do the JPMC post-build things.
+##
+
+
+echo
+echo "Adding and configuring SYSLINUX font, using ${JPMC_CONSOLE_FONT_FILE}."
+echo
+copy_font && add_font_directive
+
+
+echo
+echo "Customizing SYSLINUX boot text with date ${BUILD_DATE} and version ${BUILD_VERSION}"
+echo
+edit_product_text
+
+
