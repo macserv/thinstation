@@ -8,8 +8,6 @@ module btrtl
 module btusb
 module ccm
 module ccp
-module cdc-acm
-module cdc_ether
 module cfbcopyarea
 module cfbfillrect
 module cfbimgblt
@@ -38,7 +36,7 @@ module kvm
 module libahci
 module libata
 module mac80211
-module mii
+module mt7601u
 module pcspkr
 module r8169
 module radeon
@@ -63,6 +61,5 @@ module sparse-keymap
 module tpm_infineon
 module ttm
 module uas
-module usbnet
 module wmi
 module wmi-bmof
