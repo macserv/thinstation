@@ -1,0 +1,31 @@
+{
+    "defaultHandlersVersion": {
+        "en-US": 4
+    },
+    "mimeTypes": {
+        "application/x-ica": {
+            "action": 2,
+            "ask": false,
+            "extensions": [
+                "ica"
+            ],
+            "handlers": [
+                {
+                    "name": "Citrix Receiver",
+                    "path": "/opt/Citrix/ICAClient/wfica"
+                }
+            ]
+        }
+    },
+    "schemes": {
+        "receiver": {
+            "action": 4,
+            "ask": false
+        },
+        "citrixonline": {
+            "action": 4,
+            "ask": false
+        }
+    }
+}
+

@@ -74,6 +74,7 @@ xfconf_settings()
 		xfconf-query -c xfce4-desktop -p /desktop-icons/file-icons/show-home -t bool -s false -n
 		xfconf-query -c xfce4-desktop -p /desktop-icons/file-icons/show-trash -t bool -s false -n
 		xfconf-query -c xfce4-desktop -p /desktop-icons/file-icons/show-removable -t bool -s false -n
+		xfconf-query -c xfce4-desktop -p /desktop-icons/style -t uint -s 0 -n
 	fi
 
 	if is_enabled $PANEL_SHOWDESKTOP; then
@@ -132,20 +133,23 @@ xfconf_settings()
 		xfconf-query -c xfce4-desktop -p /backdrop/screen0/monitor0/saturation -t double -s $XFWM4_SATURATION -n
 		xfconf-query -c xfce4-desktop -p /backdrop/screen0/monitor1/saturation -t double -s $XFWM4_SATURATION -n
 	fi
-	if [ -e /etc/background.svg ]; then
-		xfconf-query -c xfce4-desktop -p /backdrop/screen0/monitor0/image-path -t string -s /etc/background.svg -n
-		xfconf-query -c xfce4-desktop -p /backdrop/screen0/monitor0/image-show -t bool -s true -n
-		xfconf-query -c xfce4-desktop -p /backdrop/screen0/monitor0/image-style -t int -s 4 -n
-		xfconf-query -c xfce4-desktop -p /backdrop/screen0/monitor1/image-path -t string -s /etc/background.svg -n
-		xfconf-query -c xfce4-desktop -p /backdrop/screen0/monitor1/image-show -t bool -s true -n
-		xfconf-query -c xfce4-desktop -p /backdrop/screen0/monitor1/image-style -t int -s 4 -n
-	elif [ -e /etc/background.jpg ]; then
-		xfconf-query -c xfce4-desktop -p /backdrop/screen0/monitor0/image-path -t string -s /etc/background.jpg -n
-		xfconf-query -c xfce4-desktop -p /backdrop/screen0/monitor0/image-show -t bool -s true -n
-		xfconf-query -c xfce4-desktop -p /backdrop/screen0/monitor0/image-style -t int -s 3 -n
-		xfconf-query -c xfce4-desktop -p /backdrop/screen0/monitor1/image-path -t string -s /etc/background.jpg -n
-		xfconf-query -c xfce4-desktop -p /backdrop/screen0/monitor1/image-show -t bool -s true -n
-		xfconf-query -c xfce4-desktop -p /backdrop/screen0/monitor1/image-style -t int -s 3 -n
+	
+	BACKGROUND_MATCH=( /etc/background.* )
+		
+	if [ -f ${BACKGROUND_MATCH} ]; then
+	
+		for MONITOR in "monitor0" "monitor1" ; do
+			xfconf-query -c xfce4-desktop -p /backdrop/screen0/${MONITOR}/image-path -t string -s ${BACKGROUND_MATCH} -n
+			xfconf-query -c xfce4-desktop -p /backdrop/screen0/${MONITOR}/image-show -t bool -s true -n
+			
+			if [ -n "$DESKTOP_BACKGROUND_STYLE" ]; then
+				xfconf-query -c xfce4-desktop -p /backdrop/screen0/${MONITOR}/image-style -t int -s ${XFWM_DESKTOP_IMAGE_STYLE} -n
+			elif [ "${BACKGROUND_MATCH##*.}" == "svg" ]; then
+				xfconf-query -c xfce4-desktop -p /backdrop/screen0/${MONITOR}/image-style -t int -s 4 -n
+			else
+				xfconf-query -c xfce4-desktop -p /backdrop/screen0/${MONITOR}/image-style -t int -s 5 -n
+			fi
+		done
 	fi
 	if [ -n "$XFWM4_RED" ] && [ -n "$XFWM4_BLUE" ] && [ -n "$XFWM4_GREEN" ]; then
 		xfconf-query -c xfce4-desktop -p /backdrop/screen0/monitor0/color1 -t uint -t uint -t uint -t uint -s $XFWM4_RED -s $XFWM4_GREEN -s $XFWM4_BLUE -s 65535 -n

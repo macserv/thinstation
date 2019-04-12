@@ -1,0 +1,11 @@
+[Desktop Entry]
+Version=1.0
+Name=Firefox
+Comment=Firefox
+TryExec=pkg window firefox
+Exec=pkg window firefox
+StartupNotify=false
+Terminal=false
+Type=Application
+Icon=firefox
+Categories=GTK;GNOME;X-Xfce-Toplevel;

@@ -1412,12 +1412,8 @@ fi
 echo -e "Checking for Desktop background"
 
 if [ -e $PACDIR/desktop.param ]; then
-    echo -e "Using $ts_desktop as desktop background"
-    if [ "`basename $ts_desktop |cut -d. -f2`" == "svg" ]; then
-	get_file $ts_desktop ./tmp-tree/etc background.svg
-    else
-	get_file $ts_desktop ./tmp-tree/etc background.jpg
-    fi
+    echo -e "Using ${ts_desktop} as desktop background"
+	get_file ${ts_desktop} ./tmp-tree/etc background.${ts_desktop##*.}
 fi
 
 echo -e "Checking for Known Hosts File"

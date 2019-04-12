@@ -1,0 +1,62 @@
+#! /bin/sh
+. `dirname $0`/common
+
+HOME="/etc/skel"
+
+pkg_initialized   $PACKAGE && { return ; }
+pkg_set_init_flag $PACKAGE
+
+LOGGERTAG="jpmc-init-firefox"
+logger --stderr --tag $LOGGERTAG "[INFO] Starting JPMC configuration for Firefox."
+
+
+###
+#  CONFIGURE JPMC INIT SCRIPT FOR FIREFOX
+##
+
+JPMC_TS_DEFAULT_DIR="/etc/TS.default"
+FF_PROFILE_DIR="${HOME}/.mozilla/firefox/TS.default"
+JPMC_MYWORKSPACE_URI="https://myworkspace.jpmchase.com"
+
+
+
+###
+#  ADD USER PREFS
+##
+
+PREFS_PATH="${FF_PROFILE_DIR}/prefs.js"
+
+if [ -f ${PREFS_PATH} ] ; then
+
+	echo 'user_pref("browser.startup.homepage", "'${JPMC_MYWORKSPACE_URI}'");' >> ${PREFS_PATH}
+	echo 'user_pref("general.useragent.override", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:60.0) Gecko/20100101 Firefox/60.0");' >> ${PREFS_PATH}
+	echo 'user_pref("browser.helperApps.neverAsk.openFile", "application/x-ica");' >> ${PREFS_PATH}
+	echo 'user_pref("signon.rememberSignons", false);' >> ${PREFS_PATH}
+
+fi
+
+
+
+###
+#  ADD CITRIX HANDLERS TO FIREFOX PROFILE
+##
+
+HANDLER_FILENAME="handlers.json"
+
+[ -d ${FF_PROFILE_DIR} ]                     || { logger --stderr --tag $LOGGERTAG "[ERROR] Firefox profile not found at ${FF_PROFILE_DIR}" ; return ; }
+[ -f ${FF_PROFILE_DIR}/${HANDLER_FILENAME} ] || { cp ${JPMC_TS_DEFAULT_DIR}/${HANDLER_FILENAME} ${FF_PROFILE_DIR}/.                         ; return ; }
+
+MERGED_HANDLERS=$(jq -s '.[0] * .[1]' ${FF_PROFILE_DIR}/${HANDLER_FILENAME} ${JPMC_TS_DEFAULT_DIR}/${HANDLER_FILENAME} ) ||
+{ 
+	logger --stderr --tag $LOGGERTAG "[ERROR] Could not merge template with existing handlers.json file. Error: $?"
+	return
+}
+
+echo ${MERGED_HANDLERS} > ${FF_PROFILE_DIR}/handlers.json
+
+
+
+logger --stderr --tag $LOGGERTAG "[INFO] Finished JPMC configuration for Firefox."
+
+
+

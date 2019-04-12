@@ -35,6 +35,22 @@ trap 'echo -e "\a" ; times ; date' EXIT
 ##
 
 
+adjust_timezone()
+{
+    local TIMEZONE_LINK="/etc/localtime"
+    local TIMEZONE_TARGET="$(readlink "${TIMEZONE_LINK}")"
+    local TIMEZONE_REQUIRED="/usr/share/zoneinfo/America/New_York"
+    
+    [[ -L "${TIMEZONE_LINK}" && "${TIMEZONE_TARGET}" == "${TIMEZONE_REQUIRED}" ]] ||
+    {
+        echo "[ERROR] Time zone currently set to ${TIMEZONE_TARGET:t}.  Resetting to ${TIMEZONE_REQUIRED:t}."
+        
+        rm -f "${TIMEZONE_LINK}"                        || { echo "[ERROR] Failed to remove time zone link." ; return 1 ; }
+        ln -s "${TIMEZONE_REQUIRED}" "${TIMEZONE_LINK}" || { echo "[ERROR] Failed to establish time zone link." ; return 1 ; }
+    }
+}
+
+
 build_thinstation()
 {
     cd /build || { echo "[ERROR] Could not change directory to /build." ; return 1 ; }
@@ -76,6 +92,16 @@ edit_product_text()
 
     [ -n "$(cat ${SYSLINUX_PRODUCT_PATH})" ] || { echo "[WARNING] Custom product.txt file was not created, or is empty." ; return 1 ; }
 }
+
+
+####
+# Do the JPMC pre-build things.
+##
+
+echo
+echo "Checking build environment time zone."
+echo
+adjust_timezone
 
 
 

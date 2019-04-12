@@ -1,0 +1,17 @@
+[Unit]
+Description=Configure Firefox Settings
+DefaultDependencies=no
+Conflicts=shutdown.target
+After=profile-setup.service net.profile-setup.service pkg.service firefox-init.service
+Before=session-setup.service
+ConditionPathIsReadWrite=/etc
+
+[Service]
+Type=oneshot
+EnvironmentFile=/etc/thinstation.env
+ExecStart=/etc/init.d/jpmc-firefox-init
+SyslogIdentifier=thinstation
+
+[Install]
+WantedBy=multi-user.target
+
