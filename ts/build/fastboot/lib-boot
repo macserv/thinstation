@@ -15,6 +15,7 @@ libcrypt.so.1
 libcrypto.so
 libcrypto.so.1.0.0
 libcrypto.so.1.0.1
+libcrypto.so.1.1
 libdl.so.2
 libfbsplash.so.1
 libfbsplashrender.so.1
@@ -48,6 +49,7 @@ librt.so.1
 libssl.so
 libssl.so.1.0.0
 libssl.so.1.0.1
+libssl.so.1.1
 libsystemd-shared-239.so
 libsystemd.so.0
 libudev.so.0
@@ -73,3 +75,6 @@ libcom_err.so.2
 libnsl.so.1
 libkrb5support.so.0
 libkeyutils.so.1
+libglibmm-2.4.so.1
+libgdkmm-2.4.so.1
+libgtkmm-2.4.so.1

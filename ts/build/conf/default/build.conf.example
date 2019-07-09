@@ -195,6 +195,7 @@ package freerdp		# X RDP Client - fork of rdesktop
 #package thinlinc		# Cendio ThinLinc client support
 #package nx              	# No Machine NX client
 #package 2x			# 2X client
+#package spice			# Redhat Spice Client
 #package java			# Java runtime
 #package firefox		# Firefox current Web Browser
 package chrome			# Google Chrome Web Browser
@@ -257,6 +258,10 @@ package samba-client		# Samba smbclient, gives a shell like environment to acces
                         	#  adds some networking based options for downloading configuration files or
                         	#  in using hdupdate package.
 #package openvpn                # OpenVPN Client Support
+#package vhusbip		# The VirtualHere USB Server enables remote access to USB devices over a network.
+				# Install the Generic Build of the VirtualHere Server on an unlimited number of computers
+				# and share a single USB device per computer server, with no payment required.
+				# To share more than one USB device simultaneously from a single server you must purchase an "Unlimited Device License".
 
 
 #!!PCSCD Card Readers
@@ -407,7 +412,7 @@ param bootverbosity   3          			# Increased vebosity when booting TS
 #!!Advanced
 # Leave this alone unless you can t download (wget required on your Linux box):
 param downloads         /downloads
-param bootimages        "iso syslinux pxe refind"
+#param bootimages        "iso syslinux pxe refind"
 #param bootserver        "192.168.1.1"		# Used for the pxe image config files to specify where to download
 											# the syslinux image from. Result is generated in
 											# /ts/build/boot-images/pxe/boot/lpxelinux/pxelinux.cfg/default
