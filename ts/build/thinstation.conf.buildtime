@@ -9,11 +9,11 @@
 # --- DEBUGGING
 #
 
-DEBUGPAUSE="true"
-DEBUG_BOOT="true"
-DEBUG_PACKAGES="true"
-NO_SESSION="/bin/sh"
-NO_XORG_CMD="/bin/sh"
+#DEBUGPAUSE="true"
+#DEBUG_BOOT="true"
+#DEBUG_PACKAGES="true"
+#NO_SESSION="/bin/sh"
+#NO_XORG_CMD="/bin/sh"
 
 
 ##
