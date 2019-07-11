@@ -9,6 +9,8 @@
 # Configuration Parameters
 ##
 
+#TODO: Make local parameters lowercase.
+
 THINSTATION_BUILD_OPTIONS="--autodl --license ACCEPT ${*}"  # Call this script with `--allmodules --savedir` when debugging.
 BUILT_SYSLINUX_PATH="/build/boot-images/syslinux/boot/syslinux"
 JPMC_PATH="/build/jpmc"
@@ -37,17 +39,16 @@ trap 'echo -e "\a" ; times ; date' EXIT
 
 adjust_timezone()
 {
-    local TIMEZONE_LINK="/etc/localtime"
-    local TIMEZONE_TARGET="$(readlink "${TIMEZONE_LINK}")"
-    local TIMEZONE_REQUIRED="/usr/share/zoneinfo/America/New_York"
+    local TIMEZONE_LINK     ;     TIMEZONE_LINK="/etc/localtime"
+    local TIMEZONE_TARGET   ;   TIMEZONE_TARGET="$(readlink "${TIMEZONE_LINK}")"
+    local TIMEZONE_REQUIRED ; TIMEZONE_REQUIRED="/usr/share/zoneinfo/America/New_York" #TODO: Move REQUIRED to config above.
     
-    [[ -L "${TIMEZONE_LINK}" && "${TIMEZONE_TARGET}" == "${TIMEZONE_REQUIRED}" ]] ||
-    {
-        echo "[ERROR] Time zone currently set to ${TIMEZONE_TARGET:t}.  Resetting to ${TIMEZONE_REQUIRED:t}."
-        
-        rm -f "${TIMEZONE_LINK}"                        || { echo "[ERROR] Failed to remove time zone link." ; return 1 ; }
-        ln -s "${TIMEZONE_REQUIRED}" "${TIMEZONE_LINK}" || { echo "[ERROR] Failed to establish time zone link." ; return 1 ; }
-    }
+    [[ -L "${TIMEZONE_LINK}" && "${TIMEZONE_TARGET}" == "${TIMEZONE_REQUIRED}" ]] && { return ; }
+
+    echo "[ERROR] Time zone currently set to ${TIMEZONE_TARGET:t}.  Resetting to ${TIMEZONE_REQUIRED:t}."
+    
+    rm -f "${TIMEZONE_LINK}"                        || { echo "[ERROR] Failed to remove time zone link." ; return 1 ; }
+    ln -s "${TIMEZONE_REQUIRED}" "${TIMEZONE_LINK}" || { echo "[ERROR] Failed to establish time zone link." ; return 1 ; }
 }
 
 
@@ -58,7 +59,7 @@ build_thinstation()
 }
 
 
-copy_font()
+copy_syslinux_font()
 {
     local FONT_PATH="${JPMC_SYSLINUX_PATH}/psf/${JPMC_CONSOLE_FONT_FILE}"
     
@@ -67,30 +68,49 @@ copy_font()
 }
 
 
-add_font_directive()
+add_syslinux_font_directive()
 {
-    local SYSLINUX_CFG_PATH="${BUILT_SYSLINUX_PATH}/syslinux.cfg"
-    local FONT_DIRECTIVE="FONT ${JPMC_CONSOLE_FONT_FILE}\n"
+    local SYSLINUX_CFG_PATH ; SYSLINUX_CFG_PATH="${BUILT_SYSLINUX_PATH}/syslinux.cfg"
+    local FONT_DIRECTIVE    ;    FONT_DIRECTIVE="FONT ${JPMC_CONSOLE_FONT_FILE}\n"
 
     sed -i "1s|^|${FONT_DIRECTIVE}|" "${SYSLINUX_CFG_PATH}" || { echo "[WARNING] FONT directive insertion failed." ; return 1 ; }
 }
 
 
-edit_product_text()
+edit_syslinux_product_text()
 {
-    local TEMPLATE_PRODUCT_PATH="${JPMC_SYSLINUX_PATH}/product.txt.tpl"
-    local SYSLINUX_PRODUCT_PATH="${BUILT_SYSLINUX_PATH}/product.txt"
+    local TEMPLATE_PRODUCT_PATH ; TEMPLATE_PRODUCT_PATH="${JPMC_SYSLINUX_PATH}/product.txt.tpl"
+    local SYSLINUX_PRODUCT_PATH ; SYSLINUX_PRODUCT_PATH="${BUILT_SYSLINUX_PATH}/product.txt"
 
     [ -f "${TEMPLATE_PRODUCT_PATH}" ] || { echo "[WARNING] Product template does not exist at expected path: ${TEMPLATE_PRODUCT_PATH}." ; return 1 ; }
     [ -f "${SYSLINUX_PRODUCT_PATH}" ] && { rm -f "${SYSLINUX_PRODUCT_PATH}" || { echo "[WARNING] Could not remove default product.txt added during TS build." ; return 1 ; } }
     
-    local  PRODUCT_TEMPLATE="$(cat ${TEMPLATE_PRODUCT_PATH})"
+    local  PRODUCT_TEMPLATE ; PRODUCT_TEMPLATE="$(cat ${TEMPLATE_PRODUCT_PATH})"
     export PRODUCT_TEMPLATE_BUILD_DATE="${BUILD_DATE}"
     export PRODUCT_TEMPLATE_VERSION_STRING="${BUILD_VERSION}"
     
     eval "echo \"${PRODUCT_TEMPLATE}\"" > "${SYSLINUX_PRODUCT_PATH}"
 
     [ -n "$(cat ${SYSLINUX_PRODUCT_PATH})" ] || { echo "[WARNING] Custom product.txt file was not created, or is empty." ; return 1 ; }
+}
+
+
+add_boot_verbosity()
+{
+    echo "[WARNING] This should be disabled before deployment."
+    # Add logic to disable this with a flag or something.
+    # Also, the replacement (i.e.: using LM=2) below won't work for every boot image type.
+
+    local -a kernel_configs ; kernel_configs=(                               \
+        "/ts/build/boot-images/systemd-boot/loader/entries/thinstation.conf" \ # systemd_boot
+        "/ts/build/boot-images/syslinux/boot/syslinux/syslinux.cfg"          \ # syslinux
+    )
+
+    for config in ${kernel_configs[*]} ; do
+
+        [ -f "${config}" ] && sed --in-place 's/LM=2/LM=2  loglevel=8  systemd.show_status=true  udev.log_priority=8  rd.systemd.show_status=true  rd.udev.log_priority=8  /' "${config}"
+
+    done
 }
 
 
@@ -125,12 +145,17 @@ build_thinstation || { echo "[ERROR] ThinStation build failed... script will now
 echo
 echo "Adding and configuring SYSLINUX font, using ${JPMC_CONSOLE_FONT_FILE}."
 echo
-copy_font && add_font_directive
+copy_syslinux_font && add_syslinux_font_directive
 
 
 echo
 echo "Customizing SYSLINUX boot text with date ${BUILD_DATE} and version ${BUILD_VERSION}"
 echo
-edit_product_text
+edit_syslinux_product_text
 
+
+echo
+echo "Adding boot verbosity to kernel options"
+echo
+add_boot_verbosity
 
