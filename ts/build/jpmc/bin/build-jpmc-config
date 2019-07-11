@@ -133,7 +133,7 @@ adjust_timezone
 echo
 echo "Starting ThinStation build."
 echo
-build_thinstation || { echo "[ERROR] ThinStation build failed... script will now exit.  Please check for errors above." ; return 1 ; }
+build_thinstation || { echo "[ERROR] ThinStation build failed... script will now exit.  Please check for errors above." ; exit 1 ; }
 
 
 
